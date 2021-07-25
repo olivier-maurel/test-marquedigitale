@@ -6,8 +6,10 @@
     <img class="d-block m-auto" src="https://marquedigitale.fr/wp-content/uploads/2020/05/logo-marquedigitale.svg" alt="Logo Marque Digitale">
 
     <div class="position-absolute start-0 top-0 m-1">
-        <a href="" title="Se diriger vers le repository GitHub de mon premier essai : tentative de génération automatique d'une base de donnée." class="btn btn-sm btn-primary">1erEssai</a>
-        <a href="" title="Se diriger vers le repository GitHub de mon deuxième essai (celui-ci) : la base de donnée ainsi que les tables ne sont pas généré automatiquement mais les insertions le sont. La barre de recherche est en asynchrone et il est possible de cliquer sur un produit pour obtenir 'plus' d'informations." class="btn btn-sm btn-primary">2emeEssai</a>
+        <a href="https://github.com/olivier-maurel/md-test-api" target="_blank" title="Se diriger vers le repository GitHub de mon premier essai : tentative de génération automatique d'une base de donnée." class="btn btn-sm btn-primary">1erGit</a>
+        <a href="https://github.com/olivier-maurel/test-marquedigitale" target="_blank" title="Se diriger vers le repository GitHub de mon deuxième essai (celui-ci) : la base de donnée ainsi que les tables ne sont pas généré automatiquement mais les insertions le sont. La barre de recherche est en asynchrone et il est possible de cliquer sur un produit pour obtenir 'plus' d'informations." class="btn btn-sm btn-primary">2emeGit</a>
+        <a href="{{ asset('assets/files/database.sql') }}" title="Obtenir le fichier SQL de la base de donnée" class="btn btn-sm btn-success">SQL File</a>
+        <a href="{{ asset('assets/files/readme.md') }}" title="Un petit texte explicatif sur ma démarche pour répondre à la mission" class="btn btn-sm btn-info">ReadMe</a>
     </div>
 
     <button class="btn btn-sm btn-danger position-absolute end-0 top-0 m-1" id="generate" title="Attention! Vous êtes sur le point de regénérer la base de donnée, les tables seront vidés puis les données seront réinsérées. Pour plus d'info -> 'src/Service/HydrationService'">Regénérer la base de donnée</button>
@@ -26,35 +28,15 @@
         </div>
     {{ form_end(form) }}
 
-    <table class="table table-hover table-striped small w-auto m-auto">
-        <thead class="text-white">
-            <tr style="background-color: rgb(80, 80, 80);">
-                <th>materiel_id</th>
-                <th>nom_court</th>
-                <th>marque</th>
-                <th>prix_public</th>
-                <th>reference_fabricant</th>
-                <th>type</th>
-                <th>metier</th>
-            </tr>
-        </thead>
-        <tbody id="tbody">
-            {% include 'materiel/table.html.twig' %}
-        </tbody>
-    </table>
+    <div class="content-table">
+        {% include 'materiel/table.html.twig' %}
+    </div>
 
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
             </div>
         </div>
-    </div>
-
-    <div id="dbAlert" class="alert alert-success d-none" role="alert" style="position: fixed; top: 15px; left: 50%; transform: translateX(-50%);">
-        <h4>Rapport de la génération de la base de données.</h4>
-        <small id="message">
-            
-        </small>
     </div>
 {% endblock %}
 
@@ -76,9 +58,7 @@
 
     $(document.body).on('click', '#generate', function(){      
         $.post("{{ path('materiel_hydrate') }}", function(data){
-            if (data['success'] != true)
-                $('#dbAlert').addClass('alert-danger');    
-            $('#message').html(data['message']);
+            $('.content-table').html(data);
             $('#dbAlert').removeClass('d-none');
             setTimeout(function() {
                 $('#dbAlert').addClass('d-none');
@@ -101,7 +81,7 @@
           processData: false,
           data: $formData
         }).then(function(result){
-            $('#tbody').html(result);
+            $('.content-table').html(result);
         });
     }
 

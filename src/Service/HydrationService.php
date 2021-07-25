@@ -131,9 +131,13 @@ class HydrationService
         $conn = $this->em->getConnection();
         $stmt = $conn->prepare($sql);
 
-        if ($stmt->execute())
+        try {
+            $stmt->execute();
             return true;
-        else return false;
+        } catch (\Throwable $th) {
+            return true;
+        }
+
     }
 
     /**

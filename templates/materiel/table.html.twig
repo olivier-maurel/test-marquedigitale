@@ -1,19 +1,38 @@
-{% for materiel in materiels %}
-    <tr class="bg-light" data-id="{{ materiel.id }}" style="cursor: pointer;" data-toggle="modal" data-target=".bd-example-modal-lg">
-        <td>{{ materiel.id }}</td>
-        <td>{{ materiel.nomCourt }}</td>
-        <td>{{ materiel.marque }}</td>
-        <td>{{ materiel.prixPublic }}</td>
-        <td>{{ materiel.referenceFabricant }}</td>
-        <td>{{ materiel.type.nom }}</td>
-        <td>{{ materiel.type.metier.nom }}</td>
-        <!-- <td>
-            <a href="{{ path('materiel_show', {'id': materiel.id}) }}">show</a>
-            <a href="{{ path('materiel_edit', {'id': materiel.id}) }}">edit</a>
-        </td> -->
-    </tr>
-{% else %}
-    <tr>
-        <td colspan="9">no records found</td>
-    </tr>
-{% endfor %}
+<table class="table table-hover table-striped small w-auto m-auto">
+    <thead class="text-white">
+        <tr style="background-color: rgb(80, 80, 80);">
+            <th>materiel_id</th>
+            <th>nom_court</th>
+            <th>marque</th>
+            <th>prix_public</th>
+            <th>reference_fabricant</th>
+            <th>type</th>
+            <th>metier</th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+        {% for materiel in materiels %}
+            <tr class="bg-light" data-id="{{ materiel.id }}" style="cursor: pointer;" data-toggle="modal" data-target=".bd-example-modal-lg">
+                <td>{{ materiel.id }}</td>
+                <td>{{ materiel.nomCourt }}</td>
+                <td>{{ materiel.marque }}</td>
+                <td>{{ materiel.prixPublic }}</td>
+                <td>{{ materiel.referenceFabricant }}</td>
+                <td>{{ materiel.type.nom }}</td>
+                <td>{{ materiel.type.metier.nom }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">Aucun produit trouvé :/</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<div id="dbAlert" class="alert alert-{% if success is defined and success == true %}success{% else %}danger{% endif %} d-none" role="alert" style="position: fixed; top: 15px; left: 50%; transform: translateX(-50%);">
+    <h4>Rapport de la génération de la base de données.</h4>
+    <small id="message">
+        {% if message is defined %}{{ message | raw }}{% endif %}
+    </small>
+</div>

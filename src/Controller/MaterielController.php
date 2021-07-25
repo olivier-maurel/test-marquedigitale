@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Knp\Component\Pager\PaginatorInterface;
 
 
 /**
@@ -25,7 +24,7 @@ class MaterielController extends AbstractController
     /**
      * @Route("/", name="materiel_index", methods={"GET"})
      */
-    public function index(MaterielRepository $materielRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(MaterielRepository $materielRepository, Request $request): Response
     {
         $form       = $this->createForm(MaterielFormType::class);
             
@@ -36,13 +35,18 @@ class MaterielController extends AbstractController
     }
 
     /**
-     * @Route("/hydrate", name="materiel_hydrate", methods={"GET","POST"})
+     * @Route("/hydrate", name="materiel_hydrate", methods={"POST"})
      */
-    public function hydrate(Request $request, HydrationService $hydS): Response
+    public function hydrate(MaterielRepository $materielRepository, Request $request, HydrationService $hydS): Response
     {
         $result = $hydS->insertToDatabase();
 
-        return new JsonResponse($result);
+        //return new JsonResponse($result);
+        return $this->render('materiel/table.html.twig', [
+            'materiels' => $materielRepository->findAll(),
+            'success'   => $result['success'],
+            'message'   => $result['message']
+        ]);
     }
 
     /**
