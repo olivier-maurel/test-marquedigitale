@@ -22,7 +22,7 @@ class MaterielFormType extends AbstractType
                 'label'         => false,
                 'attr'          => [
                     'placeholder'   => 'Recherche...',
-                    'class'         => 'form-control my-3',
+                    'class'         => 'form-control my-3 search-item',
                     'style'         => 'width: 415px;'
                 ]
             ])
@@ -33,7 +33,7 @@ class MaterielFormType extends AbstractType
                 'mapped'        => true,
                 'required'      => false,
                 'attr'          => [
-                    'class' => 'form-control mx-2',
+                    'class' => 'form-control mx-2 search-item',
                     'style' => 'width: 200px; cursor: pointer;'
                 ]
             ])
@@ -44,7 +44,7 @@ class MaterielFormType extends AbstractType
                 'mapped'        => true,
                 'required'      => false,
                 'attr'          => [
-                    'class' => 'form-control mx-2',
+                    'class' => 'form-control mx-2 search-item',
                     'style' => 'width: 200px; cursor: pointer;'
                 ]
             ])

@@ -38,6 +38,12 @@ class HydrationService
         // Récupération des données.
         $data = $this->getApiData()['content'];
 
+        if ($this->emptyTable() != true)
+            return [
+                'success' => false,
+                'message' => 'Le vidage des tables ne s\'est pas executé correctement.'
+            ];
+
         // Préparation de la données.
         foreach ($data as $materiel) {
 
@@ -66,7 +72,7 @@ class HydrationService
         // Création du message de retour.
         $message = '';
         foreach ($logs as $log) {
-            $message = $message.$log."\n";
+            $message = $message.$log."<br>";
         }
         
         return [
@@ -105,6 +111,29 @@ class HydrationService
             'message' => 'La récupération des données depuis l\'API a été effectuée.',
             'content' => $array 
         ];
+    }
+
+    /**
+	* Vide les tables de la base de données.
+	* @return boolean
+	*/
+    private function emptyTable()
+    {
+        $sql = '
+            SET FOREIGN_KEY_CHECKS = 0;
+            TRUNCATE `fabricant`;
+            TRUNCATE `materiel`;
+            TRUNCATE `metier`;
+            TRUNCATE `type`;
+            SET FOREIGN_KEY_CHECKS = 1;
+        ';
+
+        $conn = $this->em->getConnection();
+        $stmt = $conn->prepare($sql);
+
+        if ($stmt->execute())
+            return true;
+        else return false;
     }
 
     /**

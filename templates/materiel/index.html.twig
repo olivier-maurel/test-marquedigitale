@@ -5,6 +5,13 @@
 {% block body %}
     <img class="d-block m-auto" src="https://marquedigitale.fr/wp-content/uploads/2020/05/logo-marquedigitale.svg" alt="Logo Marque Digitale">
 
+    <div class="position-absolute start-0 top-0 m-1">
+        <a href="" title="Se diriger vers le repository GitHub de mon premier essai : tentative de génération automatique d'une base de donnée." class="btn btn-sm btn-primary">1erEssai</a>
+        <a href="" title="Se diriger vers le repository GitHub de mon deuxième essai (celui-ci) : la base de donnée ainsi que les tables ne sont pas généré automatiquement mais les insertions le sont. La barre de recherche est en asynchrone et il est possible de cliquer sur un produit pour obtenir 'plus' d'informations." class="btn btn-sm btn-primary">2emeEssai</a>
+    </div>
+
+    <button class="btn btn-sm btn-danger position-absolute end-0 top-0 m-1" id="generate" title="Attention! Vous êtes sur le point de regénérer la base de donnée, les tables seront vidés puis les données seront réinsérées. Pour plus d'info -> 'src/Service/HydrationService'">Regénérer la base de donnée</button>
+
     {{ form_start(form) }}
         <div class="">
             <div class="m-auto my-5 p-2" style="width: max-content; background-color: #c18484;">
@@ -29,29 +36,76 @@
                 <th>reference_fabricant</th>
                 <th>type</th>
                 <th>metier</th>
-                <th>actions</th>
             </tr>
         </thead>
-        <tbody>
-        {% for materiel in materiels %}
-            <tr class="bg-light">
-                <td>{{ materiel.id }}</td>
-                <td>{{ materiel.nomCourt }}</td>
-                <td>{{ materiel.marque }}</td>
-                <td>{{ materiel.prixPublic }}</td>
-                <td>{{ materiel.referenceFabricant }}</td>
-                <td>{{ materiel.type.nom }}</td>
-                <td>{{ materiel.type.metier.nom }}</td>
-                <td>
-                    <a href="{{ path('materiel_show', {'id': materiel.id}) }}">show</a>
-                    <a href="{{ path('materiel_edit', {'id': materiel.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">no records found</td>
-            </tr>
-        {% endfor %}
+        <tbody id="tbody">
+            {% include 'materiel/table.html.twig' %}
         </tbody>
     </table>
+
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <div id="dbAlert" class="alert alert-success d-none" role="alert" style="position: fixed; top: 15px; left: 50%; transform: translateX(-50%);">
+        <h4>Rapport de la génération de la base de données.</h4>
+        <small id="message">
+            
+        </small>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+    $(document.body).on('change', '.search-item', function(){
+        setFormData();
+    });
+    $(document.body).on('keyup', '.search-item', function(){
+        setFormData();
+    });
+
+    $(document.body).on('click', 'tr[data-id]', function(){      
+        $.post("{{ path('materiel_show') }}", {'id': $(this).attr('data-id')}, function(data){
+            $('.modal-content').html(data);
+        });
+    });
+
+    $(document.body).on('click', '#generate', function(){      
+        $.post("{{ path('materiel_hydrate') }}", function(data){
+            if (data['success'] != true)
+                $('#dbAlert').addClass('alert-danger');    
+            $('#message').html(data['message']);
+            $('#dbAlert').removeClass('d-none');
+            setTimeout(function() {
+                $('#dbAlert').addClass('d-none');
+            }, 5000);
+        });
+    });
+
+    function setFormData()
+    {
+        $formData = new FormData();
+        $formData.append('search', $('#materiel_form_search').val());
+        $formData.append('famille', $('#materiel_form_famille').val());
+        $formData.append('marque', $('#materiel_form_marque').val());
+       
+        $.ajax({
+          method: "POST",
+          url: "{{ path('materiel_search') }}",
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: $formData
+        }).then(function(result){
+            $('#tbody').html(result);
+        });
+    }
+
+
+
+</script>
 {% endblock %}

@@ -1,0 +1,19 @@
+{% for materiel in materiels %}
+    <tr class="bg-light" data-id="{{ materiel.id }}" style="cursor: pointer;" data-toggle="modal" data-target=".bd-example-modal-lg">
+        <td>{{ materiel.id }}</td>
+        <td>{{ materiel.nomCourt }}</td>
+        <td>{{ materiel.marque }}</td>
+        <td>{{ materiel.prixPublic }}</td>
+        <td>{{ materiel.referenceFabricant }}</td>
+        <td>{{ materiel.type.nom }}</td>
+        <td>{{ materiel.type.metier.nom }}</td>
+        <!-- <td>
+            <a href="{{ path('materiel_show', {'id': materiel.id}) }}">show</a>
+            <a href="{{ path('materiel_edit', {'id': materiel.id}) }}">edit</a>
+        </td> -->
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="9">no records found</td>
+    </tr>
+{% endfor %}
