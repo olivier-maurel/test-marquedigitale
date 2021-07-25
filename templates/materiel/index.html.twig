@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Materiel index{% endblock %}
+
+{% block body %}
+    <h1>Materiel index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Debut_commercialisation</th>
+                <th>Fin_commercialisation</th>
+                <th>Prix_public</th>
+                <th>Nom_court</th>
+                <th>Nom</th>
+                <th>Marque</th>
+                <th>Reference_fabricant</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for materiel in materiels %}
+            <tr>
+                <td>{{ materiel.id }}</td>
+                <td>{{ materiel.debutCommercialisation }}</td>
+                <td>{{ materiel.finCommercialisation }}</td>
+                <td>{{ materiel.prixPublic }}</td>
+                <td>{{ materiel.nomCourt }}</td>
+                <td>{{ materiel.nom }}</td>
+                <td>{{ materiel.marque }}</td>
+                <td>{{ materiel.referenceFabricant }}</td>
+                <td>
+                    <a href="{{ path('materiel_show', {'id': materiel.id}) }}">show</a>
+                    <a href="{{ path('materiel_edit', {'id': materiel.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('materiel_new') }}">Create new</a>
+{% endblock %}

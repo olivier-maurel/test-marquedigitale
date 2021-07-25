@@ -14,7 +14,6 @@ class Type
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -36,7 +35,7 @@ class Type
     private $serialisable;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="`option`", type="boolean")
      */
     private $option;
 
@@ -46,7 +45,7 @@ class Type
     private $nom;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="`ordre`", type="integer")
      */
     private $ordre;
 
@@ -73,6 +72,13 @@ class Type
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = intval($id);
+
+        return $this;
     }
 
     public function getMetier(): ?Metier
@@ -199,6 +205,21 @@ class Type
         }
 
         return $this;
+    }
+
+    public function getSetters()
+    {
+        return [
+            'type_id'       => 'setId',
+            'metier_id'     => 'setMetier',
+            'famille'       => 'setFamille',
+            'serialisable'  => 'setSerialisable',
+            'option'        => 'setOption',
+            'nom'           => 'setNom',
+            'ordre'         => 'setOrdre',
+            'image'         => 'setImage',
+            'color'         => 'setColor'
+        ];
     }
 
 }

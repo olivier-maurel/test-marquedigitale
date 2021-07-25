@@ -14,7 +14,6 @@ class Metier
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -42,6 +41,13 @@ class Metier
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = intval($id);
+
+        return $this;
     }
 
     public function getCode(): ?string
@@ -96,5 +102,14 @@ class Metier
         }
 
         return $this;
+    }
+
+    public function getSetters()
+    {
+        return [
+            'metier_id' => 'setId',
+            'code' => 'setCode',
+            'nom'  => 'setNom'
+        ];
     }
 }

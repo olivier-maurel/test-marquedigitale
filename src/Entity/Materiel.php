@@ -12,7 +12,6 @@ class Materiel
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -67,6 +66,13 @@ class Materiel
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = intval($id);
+
+        return $this;
     }
 
     public function getType(): ?Type
@@ -175,6 +181,22 @@ class Materiel
         $this->reference_fabricant = $reference_fabricant;
 
         return $this;
+    }
+
+    public function getSetters()
+    {
+        return [
+            'materiel_id'               => 'setId',
+            'type_id'                   => 'setType',
+            'fabricant_id'              => 'setFabricant',
+            'debut_commercialisation'   => 'setDebutCommercialisation',
+            'fin_commercialisation'     => 'setFinCommercialisation',
+            'prix_public'               => 'setPrixPublic',
+            'nom_court'                 => 'setNomCourt',
+            'nom'                       => 'setNom',
+            'marque'                    => 'setMarque',
+            'reference_fabricant'       => 'setReferenceFabricant'
+        ];
     }
 
 }

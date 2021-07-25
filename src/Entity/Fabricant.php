@@ -14,7 +14,6 @@ class Fabricant
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -47,6 +46,13 @@ class Fabricant
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = intval($id);
+
+        return $this;
     }
 
     public function getCode(): ?string
@@ -113,5 +119,15 @@ class Fabricant
         }
 
         return $this;
+    }
+
+    public function getSetters()
+    {
+        return [
+            'fabricant_id'  => 'setId',
+            'code'          => 'setCode',
+            'nom'           => 'setNom',
+            'image'         => 'setImage'
+        ];
     }
 }
