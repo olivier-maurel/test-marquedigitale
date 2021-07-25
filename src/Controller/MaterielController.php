@@ -5,8 +5,9 @@ namespace App\Controller;
 use App\Service\HydrationService;
 
 use App\Entity\Materiel;
-use App\Form\MaterielType;
+use App\Form\MaterielFormType;
 use App\Repository\MaterielRepository;
+
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +25,11 @@ class MaterielController extends AbstractController
      */
     public function index(MaterielRepository $materielRepository): Response
     {
+        $form = $this->createForm(MaterielFormType::class);
+        
         return $this->render('materiel/index.html.twig', [
             'materiels' => $materielRepository->findAll(),
+            'form'      => $form->createView()
         ]);
     }
 

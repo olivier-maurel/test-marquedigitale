@@ -69,6 +69,10 @@ class Type
         $this->materiels = new ArrayCollection();
     }
 
+    public function __toString() {
+        return $this->famille;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

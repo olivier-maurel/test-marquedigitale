@@ -3,33 +3,45 @@
 {% block title %}Materiel index{% endblock %}
 
 {% block body %}
-    <h1>Materiel index</h1>
+    <img class="d-block m-auto" src="https://marquedigitale.fr/wp-content/uploads/2020/05/logo-marquedigitale.svg" alt="Logo Marque Digitale">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Debut_commercialisation</th>
-                <th>Fin_commercialisation</th>
-                <th>Prix_public</th>
-                <th>Nom_court</th>
-                <th>Nom</th>
-                <th>Marque</th>
-                <th>Reference_fabricant</th>
+    {{ form_start(form) }}
+        <div class="">
+            <div class="m-auto my-5 p-2" style="width: max-content; background-color: #c18484;">
+                <div class="d-flex justify-content-center">
+                    {{ form_row(form.search) }}
+                </div>
+                <div class="d-flex justify-content-center">
+                    {{ form_row(form.famille) }}
+                    {{ form_row(form.marque) }}
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    <table class="table table-hover table-striped small w-auto m-auto">
+        <thead class="text-white">
+            <tr style="background-color: rgb(80, 80, 80);">
+                <th>materiel_id</th>
+                <th>nom_court</th>
+                <th>marque</th>
+                <th>prix_public</th>
+                <th>reference_fabricant</th>
+                <th>type</th>
+                <th>metier</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for materiel in materiels %}
-            <tr>
+            <tr class="bg-light">
                 <td>{{ materiel.id }}</td>
-                <td>{{ materiel.debutCommercialisation }}</td>
-                <td>{{ materiel.finCommercialisation }}</td>
-                <td>{{ materiel.prixPublic }}</td>
                 <td>{{ materiel.nomCourt }}</td>
-                <td>{{ materiel.nom }}</td>
                 <td>{{ materiel.marque }}</td>
+                <td>{{ materiel.prixPublic }}</td>
                 <td>{{ materiel.referenceFabricant }}</td>
+                <td>{{ materiel.type.nom }}</td>
+                <td>{{ materiel.type.metier.nom }}</td>
                 <td>
                     <a href="{{ path('materiel_show', {'id': materiel.id}) }}">show</a>
                     <a href="{{ path('materiel_edit', {'id': materiel.id}) }}">edit</a>
@@ -42,6 +54,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('materiel_new') }}">Create new</a>
 {% endblock %}
